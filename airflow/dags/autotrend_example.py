@@ -1,5 +1,5 @@
-"""
-DAG для проекта AutoTrend
+﻿"""
+DAG для проекта autotrend
 """
 import os
 import sys
@@ -32,7 +32,7 @@ PROJECT_CONFIG = get_project_config(PROJECT_NAME)
 # --- ОПРЕДЕЛЕНИЕ ФУНКЦИЙ ---
 def example_task(**context):
     """
-    Пример задачи для проекта AutoTrend
+    Пример задачи для проекта autotrend
     
     Args:
         **context: Контекст выполнения задачи Airflow
@@ -67,12 +67,12 @@ with DAG(
         python_callable=example_task,
         provide_context=True,
         doc_md="""
-        ## Пример задачи AutoTrend
+        ## Пример задачи autotrend
         
         Эта задача демонстрирует базовую структуру PythonOperator.
         
         **Функциональность**:
-        * Выводит информацию о проекте AutoTrend
+        * Выводит информацию о проекте autotrend
         * Демонстрирует использование XComs
         """,
     )

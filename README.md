@@ -8,10 +8,11 @@
 
 ```
 autotrend/
+├── db/ # Директория с файлами БД
 ├── airflow/ # Директория с файлами Airflow
 │ ├── dags/ # DAG-файлы Airflow для оркестрации задач
-│ │ ├── autotrend_example.py # Пример DAG-файла
-│ │ └── init.py # Инициализация пакета
+│   ├── autotrend_example.py # Пример DAG-файла
+│   └── init.py # Инициализация пакета
 ├── .gitignore # Исключения для Git
 └── README.md # Документация проекта
 ```
