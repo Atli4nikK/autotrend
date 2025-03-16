@@ -8,10 +8,12 @@
 
 ```
 autotrend/
-├── dags/                 # DAG-файлы Airflow
-│   ├── autotrend_example.py  # Пример DAG
-│   └── ...               # Другие DAG-файлы
-└── ...                   # Дополнительные файлы и директории
+├── airflow/ # Директория с файлами Airflow
+│ ├── dags/ # DAG-файлы Airflow для оркестрации задач
+│ │ ├── autotrend_example.py # Пример DAG-файла
+│ │ └── init.py # Инициализация пакета
+├── .gitignore # Исключения для Git
+└── README.md # Документация проекта
 ```
 
 ## Установка и настройка
