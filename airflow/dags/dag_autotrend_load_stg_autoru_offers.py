@@ -11,6 +11,7 @@ from common.notify import notify_on_failure, notify_on_success
 from airflow import DAG
 from airflow.operators.python import PythonOperator
 from airflow.utils.dates import days_ago
+
 from utils.load_stg_autoru_offers import load_csv_to_stg
 
 # Параметры по умолчанию для DAG
