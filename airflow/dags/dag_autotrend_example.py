@@ -8,6 +8,7 @@ from datetime import datetime
 # Добавляем путь к общим утилитам
 sys.path.append('/opt/airflow')
 from common.utils import get_default_args, get_project_path, get_project_config
+from common.notify import notify_on_failure, notify_on_success
 
 # Импорты Airflow
 from airflow import DAG

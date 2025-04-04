@@ -6,6 +6,7 @@ from datetime import datetime, timedelta
 sys.path.append('/opt/airflow')
 sys.path.append('/opt/airflow/dags/autotrend')
 from common.utils import get_default_args, get_project_path, get_project_config
+from common.notify import notify_on_failure, notify_on_success
 
 from airflow import DAG
 from airflow.operators.python import PythonOperator
@@ -53,5 +54,16 @@ with DAG(
         python_callable=load_csv_to_stg
     )
 
+    # Задача оповещения об успешном выполнении
+    success = PythonOperator(
+        task_id="success",
+        python_callable=notify_on_success,
+        doc_md="""
+        ## Оповещение об успешном выполнении
+        
+        Отправляет уведомление об успешном выполнении DAG.
+        """,
+    )
+
     # Определение порядка выполнения задач
-    load_stg_task
+    load_stg_task >> success

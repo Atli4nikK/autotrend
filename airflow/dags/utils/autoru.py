@@ -23,8 +23,8 @@ def autoru_parser(region=None, **kwargs):
 
 
     # Настройка директорий для хранения данных
-    SAVE_FOLDER = f"/opt/airflow/dags/autotrend/data/regions/{region}/json"  # Директория для JSON-файлов
-    SAVE_FOLDER_CSV = f"/opt/airflow/dags/autotrend/data/regions/{region}/csv"  # Директория для CSV-файлов
+    SAVE_FOLDER = f"/opt/airflow/autotrend/data/regions/{region}/json"  # Директория для JSON-файлов
+    SAVE_FOLDER_CSV = f"/opt/airflow/autotrend/data/regions/{region}/csv"  # Директория для CSV-файлов
     
     print(f"Запуск парсера для региона: {region}")
 
@@ -38,7 +38,7 @@ def autoru_parser(region=None, **kwargs):
         Returns:
             dict: Словарь вида {URL: цена} или пустой словарь, если файл не существует
         """
-        file_path=f'/opt/airflow/dags/autotrend/data/regions/{region}/json/downloaded_urls_autoru_{car_mark}_{region}.json'
+        file_path=f'/opt/airflow/autotrend/data/regions/{region}/json/downloaded_urls_autoru_{car_mark}_{region}.json'
         if os.path.exists(file_path):
             with open(file_path, "r", encoding="utf-8") as file:
                 return json.load(file)
@@ -55,7 +55,7 @@ def autoru_parser(region=None, **kwargs):
         Returns:
             None
         """
-        file_path=f'/opt/airflow/dags/autotrend/data/regions/{region}/json/downloaded_urls_autoru_{car_mark}_{region}.json'
+        file_path=f'/opt/airflow/autotrend/data/regions/{region}/json/downloaded_urls_autoru_{car_mark}_{region}.json'
         with open(file_path, "w", encoding="utf-8") as file:
             json.dump(urls, file, ensure_ascii=False, indent=4)
     

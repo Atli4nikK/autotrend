@@ -33,8 +33,8 @@ def load_csv_to_stg(**context):
         import pandas as pd
         from airflow.providers.postgres.hooks.postgres import PostgresHook
         
-        # Путь к директории с данными
-        data_dir = os.path.join(os.path.dirname(__file__), '..', 'data/regions')
+        # Путь к директории с данными /opt/airflow/autotrend/data
+        data_dir = os.path.join(os.path.dirname(__file__), '..', '..', '..', 'autotrend/data/regions')
         
         # Получаем список всех CSV файлов
         csv_files = glob.glob(os.path.join(data_dir, '**/*.csv'), recursive=True)
