@@ -72,7 +72,10 @@ def load_csv_to_stg(**context):
         
         # Загружаем данные через to_sql
         engine = pg_hook.get_sqlalchemy_engine()
-        combined_df.to_sql(
+
+        combined_df_clean = combined_df.drop_duplicates(subset=['url', 'price'])
+        
+        combined_df_clean.to_sql(
             name='autoru_offers',
             schema='stg_autotrend',
             con=engine,
@@ -92,10 +95,10 @@ def load_csv_to_stg(**context):
         # Добавляем новые данные в конец файла
         if os.path.exists(history_file):
             # Добавляем без заголовков
-            combined_df.to_csv(history_file, mode='a', header=False, index=False)
+            combined_df_clean.to_csv(history_file, mode='a', header=False, index=False)
         else:
             # Создаем новый файл с заголовками
-            combined_df.to_csv(history_file, mode='w', index=False)
+            combined_df_clean.to_csv(history_file, mode='w', index=False)
             
         print(f"История обновлена: {history_file}")
         print(f"Добавлено новых записей: {total_rows}")
