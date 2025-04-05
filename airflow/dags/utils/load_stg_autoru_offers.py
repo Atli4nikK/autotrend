@@ -74,6 +74,7 @@ def load_csv_to_stg(**context):
         engine = pg_hook.get_sqlalchemy_engine()
 
         combined_df_clean = combined_df.drop_duplicates(subset=['url', 'price'])
+        print(f"Удалено дублей: {total_rows - len(combined_df_clean)}")
         
         combined_df_clean.to_sql(
             name='autoru_offers',
