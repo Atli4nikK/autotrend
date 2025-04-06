@@ -269,7 +269,7 @@ def autoru_parser(region=None, **kwargs):
                 'exchange': (By.CSS_SELECTOR, '.CardInfoRow_exchange .CardInfoRow__cell:nth-child(2)'),  # Обмен
             }
             
-            def turbo_find_element(driver, field_name, default=''):
+            def turbo_find_element(driver, field_name, default=None):
                 """
                 Быстрый поиск элемента на странице с обработкой ошибок
                 

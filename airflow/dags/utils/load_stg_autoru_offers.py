@@ -50,11 +50,11 @@ def load_csv_to_stg(**context):
         # Читаем все CSV файлы в список DataFrame'ов
         dfs = []
         # Первый файл читаем с заголовками
-        dfs.append(pd.read_csv(csv_files[0]))
+        dfs.append(pd.read_csv(csv_files[0], na_values=['']))
         
         # Остальные файлы читаем без заголовков
         for file in csv_files[1:]:
-            df = pd.read_csv(file, names=headers, skiprows=1)
+            df = pd.read_csv(file, names=headers, skiprows=1, na_values=[''])
             dfs.append(df)
             
         # Объединяем все DataFrame'ы
@@ -105,12 +105,12 @@ def load_csv_to_stg(**context):
         print(f"Добавлено новых записей: {total_rows}")
         
         # Удаляем исходные CSV файлы
-        for file in csv_files:
-            try:
-                os.remove(file)
-                print(f"Удален исходный файл: {file}")
-            except Exception as e:
-                print(f"Ошибка при удалении файла {file}: {str(e)}")
+        # for file in csv_files:
+        #     try:
+        #         os.remove(file)
+        #         print(f"Удален исходный файл: {file}")
+        #     except Exception as e:
+        #         print(f"Ошибка при удалении файла {file}: {str(e)}")
         
     except Exception as e:
         print(f"Ошибка при загрузке данных: {str(e)}")
