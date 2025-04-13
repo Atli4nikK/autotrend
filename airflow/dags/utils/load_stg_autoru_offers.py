@@ -50,11 +50,11 @@ def load_csv_to_stg(**context):
         # Читаем все CSV файлы в список DataFrame'ов
         dfs = []
         # Первый файл читаем с заголовками
-        dfs.append(pd.read_csv(csv_files[0]))
+        dfs.append(pd.read_csv(csv_files[0], na_values=['']))
         
         # Остальные файлы читаем без заголовков
         for file in csv_files[1:]:
-            df = pd.read_csv(file, names=headers, skiprows=1)
+            df = pd.read_csv(file, names=headers, skiprows=1, na_values=[''])
             dfs.append(df)
             
         # Объединяем все DataFrame'ы
@@ -72,7 +72,11 @@ def load_csv_to_stg(**context):
         
         # Загружаем данные через to_sql
         engine = pg_hook.get_sqlalchemy_engine()
-        combined_df.to_sql(
+
+        combined_df_clean = combined_df.drop_duplicates(subset=['url', 'price'], keep='last') # вернуть price
+        print(f"Удалено дублей: {total_rows - len(combined_df_clean)}")
+        
+        combined_df_clean.to_sql(
             name='autoru_offers',
             schema='stg_autotrend',
             con=engine,
@@ -92,10 +96,10 @@ def load_csv_to_stg(**context):
         # Добавляем новые данные в конец файла
         if os.path.exists(history_file):
             # Добавляем без заголовков
-            combined_df.to_csv(history_file, mode='a', header=False, index=False)
+            combined_df_clean.to_csv(history_file, mode='a', header=False, index=False)
         else:
             # Создаем новый файл с заголовками
-            combined_df.to_csv(history_file, mode='w', index=False)
+            combined_df_clean.to_csv(history_file, mode='w', index=False)
             
         print(f"История обновлена: {history_file}")
         print(f"Добавлено новых записей: {total_rows}")

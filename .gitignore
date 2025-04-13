@@ -102,3 +102,4 @@ credentials.json
 .cursor/
 */__pycache__/
 airflow/data/regions/
+airflow/data/history/

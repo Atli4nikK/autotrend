@@ -6,12 +6,12 @@ from datetime import datetime, timedelta
 sys.path.append('/opt/airflow')
 sys.path.append('/opt/airflow/dags/autotrend')
 from common.utils import get_default_args, get_project_path, get_project_config
+from common.notify import notify_on_failure, notify_on_success
 
 from airflow import DAG
 from airflow.operators.python import PythonOperator
 from airflow.utils.dates import days_ago
 
-from common.notify import notify_on_failure, notify_on_success
 from utils.autoru import autoru_parser
 
 
@@ -179,12 +179,27 @@ with DAG(
         - Задержка между попытками: 1 минут
         """ 
 
-# Устанавливаем приоритеты для задач
-# Приоритетные регионы получат высокий вес, остальные - низкий
-# Это позволит Airflow сначала взять в работу приоритетные регионы,
-# но при наличии свободных слотов запустить и остальные регионы
-for region in REGIONS:
-    if region in PRIORITY_REGIONS:
-        region_tasks[region].priority_weight = 100  # Очень высокий приоритет
-    else:
-        region_tasks[region].priority_weight = 1   # Низкий приоритет 
+    # Устанавливаем приоритеты для задач
+    # Приоритетные регионы получат высокий вес, остальные - низкий
+    # Это позволит Airflow сначала взять в работу приоритетные регионы,
+    # но при наличии свободных слотов запустить и остальные регионы
+    for region in REGIONS:
+        if region in PRIORITY_REGIONS:
+            region_tasks[region].priority_weight = 100  # Очень высокий приоритет
+        else:
+            region_tasks[region].priority_weight = 1   # Низкий приоритет 
+            
+    # Задача оповещения об успешном выполнении
+    success = PythonOperator(
+        task_id="success",
+        python_callable=notify_on_success,
+        doc_md="""
+        ## Оповещение об успешном выполнении
+        
+        Отправляет уведомление об успешном выполнении DAG.
+        """,
+    )
+    
+    # Настраиваем зависимости: все задачи с регионами должны завершиться перед финальной задачей
+    for region in REGIONS:
+        region_tasks[region] >> success 

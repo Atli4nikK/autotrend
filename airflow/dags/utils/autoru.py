@@ -119,7 +119,7 @@ def autoru_parser(region=None, **kwargs):
     setup_chrome_optimizations(driver)
     
     # Параметры ожидания и счетчики
-    wait_time = 0.2  # Минимальное время ожидания между запросами (сек)
+    wait_time = 0.5  # Минимальное время ожидания между запросами (сек)
     total_cars = 0  # Общее количество обработанных объявлений
     
     # Фиксация времени начала выполнения для статистики
@@ -269,7 +269,7 @@ def autoru_parser(region=None, **kwargs):
                 'exchange': (By.CSS_SELECTOR, '.CardInfoRow_exchange .CardInfoRow__cell:nth-child(2)'),  # Обмен
             }
             
-            def turbo_find_element(driver, field_name, default=''):
+            def turbo_find_element(driver, field_name, default=None):
                 """
                 Быстрый поиск элемента на странице с обработкой ошибок
                 
