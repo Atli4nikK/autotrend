@@ -73,7 +73,7 @@ def load_csv_to_stg(**context):
         # Загружаем данные через to_sql
         engine = pg_hook.get_sqlalchemy_engine()
 
-        combined_df_clean = combined_df.drop_duplicates(subset=['url', 'price'])
+        combined_df_clean = combined_df.drop_duplicates(subset=['url', 'price'], keep='last') # вернуть price
         print(f"Удалено дублей: {total_rows - len(combined_df_clean)}")
         
         combined_df_clean.to_sql(
@@ -105,12 +105,12 @@ def load_csv_to_stg(**context):
         print(f"Добавлено новых записей: {total_rows}")
         
         # Удаляем исходные CSV файлы
-        # for file in csv_files:
-        #     try:
-        #         os.remove(file)
-        #         print(f"Удален исходный файл: {file}")
-        #     except Exception as e:
-        #         print(f"Ошибка при удалении файла {file}: {str(e)}")
+        for file in csv_files:
+            try:
+                os.remove(file)
+                print(f"Удален исходный файл: {file}")
+            except Exception as e:
+                print(f"Ошибка при удалении файла {file}: {str(e)}")
         
     except Exception as e:
         print(f"Ошибка при загрузке данных: {str(e)}")
